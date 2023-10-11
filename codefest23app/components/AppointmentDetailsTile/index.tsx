@@ -8,7 +8,6 @@ type AppointmentDetailsProps = {
     clientName: string;
     startTime: number;
     endTime: number;
-    state: number;
     lat: number;
     long: number;
     id: number;
@@ -90,7 +89,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     marginBottom: 10,
-    //   ...StyleSheet.absoluteFillObject,
   },
 });
 

@@ -13,7 +13,7 @@ export default function login() {
           clientName: "Tom Williams",
           startTime: 1697056755,
           endTime: 1697063955,
-          state: 1,
+          state: "warning",
         }}
       />
       <AppointmentDetailsTile
@@ -21,7 +21,6 @@ export default function login() {
           clientName: "Tom Williams",
           startTime: 1697056755,
           endTime: 1697063955,
-          state: 1,
           lat: 55.215838,
           long: -4.441463,
           id: 123,
