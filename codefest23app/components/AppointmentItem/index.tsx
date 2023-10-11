@@ -6,7 +6,7 @@ type AppointmentItemProps = {
     clientName: string;
     startTime: number;
     endTime: number;
-    state: number;
+    state: string;
   };
 };
 
@@ -15,13 +15,13 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({ appointment }) => {
 
   let dotColor = "";
   switch (state) {
-    case 2:
+    case "danger":
       dotColor = "red";
       break;
-    case 1:
+    case "warning":
       dotColor = "orange";
       break;
-    case 0:
+    case "none":
       dotColor = "gray";
       break;
   }
