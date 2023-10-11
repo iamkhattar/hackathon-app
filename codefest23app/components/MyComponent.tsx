@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { makeStyles, Text, Button, useThemeMode } from "@rneui/themed";
+import SmallAvatar from "./tiles/SmallTile";
 
 export default function App() {
   const styles = useStyles();
@@ -17,6 +18,7 @@ export default function App() {
         Open up App.tsx to start working on your app!
       </Text>
       <Button onPress={handleOnPress}>Switch Theme</Button>
+      <SmallAvatar initials="RD"></SmallAvatar>
     </View>
   );
 }
