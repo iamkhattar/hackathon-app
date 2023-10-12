@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
 
 export default function Login() {
 
-    const [username, setUsername] = useState<string>("a.turing@mail.test");
-    const [password, setPassword] = useState<string>("codefest");
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
     const [error, displayError] = useState<boolean>(false);
 
     const {user, setUser} = useAuthContext();
@@ -36,10 +36,9 @@ export default function Login() {
         const authHeader = 'Basic ' + base64.encode(`${username}:${password}`);
         axios.post(`${API_URL}/api/v1/users/login`, {}, {headers: {"Authorization": authHeader}}).then((response) => {
             const jwt = response.headers["authorization"].split(" ")[1];
-            console.log(jwt);
             const decoded = jwt_decode(jwt);
             setUser?.({...decoded as User, jwt});
-        }).catch((e: any) => {
+        }).catch((_: any) => {
             displayError(true)
         })
     }
@@ -65,7 +64,6 @@ export default function Login() {
                 errorStyle={{ color: 'red' }}
                 errorMessage={error ? "Incorrect Credentials" : undefined}
             />
-
 
             <Button
                 title="Log in"

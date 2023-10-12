@@ -1,8 +1,12 @@
-import React from "react";
-import {SafeAreaView, ScrollView, StyleSheet, View} from "react-native";
+import React, {useState} from "react";
+import {SafeAreaView, ScrollView, StyleSheet} from "react-native";
 import {Button, Card, Text} from "@rneui/themed";
 import MapView, {Marker} from "react-native-maps";
 import {Appointment} from "../../types";
+import {router} from "expo-router";
+import Axios from "axios";
+import {API_URL} from "../../constants";
+import {useAuthContext} from "../../ctx/AuthContext";
 
 type AppointmentDetailsProps = {
     appointment: Appointment
@@ -11,11 +15,13 @@ type AppointmentDetailsProps = {
 const AppointmentDetailsTile: React.FunctionComponent<
     AppointmentDetailsProps
 > = ({appointment}) => {
-    let startDate = new Date(0);
-    // startDate.setUTCSeconds(appointment.start_time);
+    const {user, setUser} = useAuthContext();
+    const [error, isError] = useState<boolean>(false);
 
-    let endDate = new Date(0);
-    // endDate.setUTCSeconds(appointment.end_time);
+
+    let startDate = new Date(appointment.start_time);
+    let endDate = new Date(appointment.end_time);
+
     return (
         <>
             <SafeAreaView style={{width: "100%", height: "100%", flex: 1}}>
@@ -45,17 +51,21 @@ const AppointmentDetailsTile: React.FunctionComponent<
                     <Text style={{marginBottom: 10}}>
                         End: {endDate.toLocaleString()}
                     </Text>
-                    {!appointment.appointment_status &&
-                        <Button
-                            buttonStyle={{
-                                borderRadius: 5,
-                                marginBottom: 10,
-                                marginTop: 10
-                            }}
-                            titleStyle={{fontWeight: "bold", fontSize: 23}}
-                            title="Check In"
-                        />
-                    }
+                    <Button
+                        buttonStyle={{
+                            borderRadius: 5
+                        }}
+                        titleStyle={{fontWeight: "bold", fontSize: 23}}
+                        title={appointment.appointment_status == "none" ? "Check In" : "Check Out"}
+                        onPress={() => {
+                            Axios.put(`${API_URL}/api/v1/appointments/${appointment.id}/status`, {"status": "CHECKED_IN"}, {headers: {'Authorization': `Bearer ${user?.jwt}`}})
+                                .then(res => router.replace({
+                                    pathname: "/worker/appointments/[id]",
+                                    params: {id: appointment.id}
+                                }))
+                                .catch((e) => isError(true));
+                        }}
+                    />
                 </Card>
             </SafeAreaView>
         </>
@@ -85,7 +95,7 @@ const styles = StyleSheet.create({
     },
     map: {
         // width: "100%",
-        height: "65%",
+        height: "75%",
         marginBottom: 10,
     },
 });
