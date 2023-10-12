@@ -58,14 +58,19 @@ const AppointmentDetailsTile: React.FunctionComponent<
                             />
                         </MapView>
 
+                        <Text style={{marginBottom: 10}}>
+                            {appointment.address}
+                        </Text>
+
 
                         {appointment.appointment_status == "CHECKED_IN" &&
                             <Button
                                 buttonStyle={{
                                     borderRadius: 5,
-                                    marginBottom: 10
+                                    marginBottom: 10,
                                 }}
-                                color={"primary"}
+                                color={"warning"}
+
                                 title={"Extend"}
                                 titleStyle={{fontWeight: "bold", fontSize: 23}}
                                 onPress={() => <Dialog />}
@@ -76,7 +81,7 @@ const AppointmentDetailsTile: React.FunctionComponent<
                                 buttonStyle={{
                                     borderRadius: 5
                                 }}
-                                color={appointment.appointment_status == "CHECKED_IN" ? "secondary" : "primary"}
+                                color={appointment.appointment_status == "CHECKED_IN" ? "primary" : "primary"}
                                 titleStyle={{fontWeight: "bold", fontSize: 23}}
                                 title={appointment.appointment_status == "none" ? "Check In" : "Check Out"}
                                 onPress={() => {
