@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {SafeAreaView, ScrollView, StyleSheet} from "react-native";
-import {Button, Card, Text} from "@rneui/themed";
+import {Button, Card, Dialog, Text} from "@rneui/themed";
 import MapView, {Marker} from "react-native-maps";
 import {Appointment} from "../../types";
 import {router} from "expo-router";
@@ -23,7 +23,7 @@ const AppointmentDetailsTile: React.FunctionComponent<
     let endDate = new Date(appointment.end_time);
 
     return (
-        <>
+        <ScrollView style={{width: "100%", height: "100%", flex: 1}}>
             <SafeAreaView style={{width: "100%", height: "100%", flex: 1}}>
                 <Card containerStyle={{height: "95%"}}>
                     <Card.Title>Appointment
@@ -51,24 +51,88 @@ const AppointmentDetailsTile: React.FunctionComponent<
                     <Text style={{marginBottom: 10}}>
                         End: {endDate.toLocaleString()}
                     </Text>
-                    <Button
-                        buttonStyle={{
-                            borderRadius: 5
-                        }}
-                        titleStyle={{fontWeight: "bold", fontSize: 23}}
-                        title={appointment.appointment_status == "none" ? "Check In" : "Check Out"}
-                        onPress={() => {
-                            Axios.put(`${API_URL}/api/v1/appointments/${appointment.id}/status`, {"status": "CHECKED_IN"}, {headers: {'Authorization': `Bearer ${user?.jwt}`}})
-                                .then(res => router.replace({
-                                    pathname: "/worker/appointments/[id]",
-                                    params: {id: appointment.id}
-                                }))
-                                .catch((e) => isError(true));
-                        }}
-                    />
+                    {appointment.appointment_status == "CHECKED_IN" &&
+                        <Button
+                            buttonStyle={{
+                                borderRadius: 5,
+                                marginBottom: 10
+                            }}
+                            color={"primary"}
+                            title={"Extend"}
+                            titleStyle={{fontWeight: "bold", fontSize: 23}}
+                            onPress={() => <Dialog />}
+                        />
+                    }
+                    {(appointment.appointment_status == "none" || appointment.appointment_status == "CHECKED_IN") &&
+                        <Button
+                            buttonStyle={{
+                                borderRadius: 5
+                            }}
+                            color={appointment.appointment_status == "CHECKED_IN" ? "secondary" : "primary"}
+                            titleStyle={{fontWeight: "bold", fontSize: 23}}
+                            title={appointment.appointment_status == "none" ? "Check In" : "Check Out"}
+                            onPress={() => {
+                                Axios.put(`${API_URL}/api/v1/appointments/${appointment.id}/status`,
+                                    {"status": appointment.appointment_status == "CHECKED_IN" ? "CHECKED_OUT" : "CHECKED_IN"},
+                                    {headers: {'Authorization': `Bearer ${user?.jwt}`}}
+                                )
+                                    .then(res => router.replace({
+                                        pathname: "/worker/appointments/[id]",
+                                        params: {id: appointment.id}
+                                    }))
+                                    .catch((e) => isError(true));
+                            }}
+                        />
+                    }
+                    {appointment.appointment_status == "CHECKED_IN" &&
+                        <Button
+                            buttonStyle={{
+                                borderRadius: 5,
+                                marginTop: 10
+                            }}
+                            color={"error"}
+                            title={"Notify Manager"}
+                            titleStyle={{fontWeight: "bold", fontSize: 23}}
+                            onPress={() => {
+                                Axios.put(`${API_URL}/api/v1/appointments/${appointment.id}/severity`,
+                                    {"status": "SOS"},
+                                    {headers: {'Authorization': `Bearer ${user?.jwt}`}}
+                                )
+                                    .then(res => router.replace({
+                                        pathname: "/worker/appointments/[id]",
+                                        params: {id: appointment.id}
+                                    }))
+                                    .catch((e) => isError(true));
+                            }}
+                        />
+                    }
+
+                    {appointment.appointment_status == "CHECKED_IN" &&
+                        <Button
+                            buttonStyle={{
+                                borderRadius: 5,
+                                marginTop: 10
+                            }}
+                            color={"error"}
+                            title={"Notify Emergency Services"}
+                            titleStyle={{fontWeight: "bold", fontSize: 23}}
+                            onPress={() => {
+                                Axios.put(`${API_URL}/api/v1/appointments/${appointment.id}/severity`,
+                                    {"status": "SOS"},
+                                    {headers: {'Authorization': `Bearer ${user?.jwt}`}}
+                                )
+                                    .then(res => router.replace({
+                                        pathname: "/worker/appointments/[id]",
+                                        params: {id: appointment.id}
+                                    }))
+                                    .catch((e) => isError(true));
+                            }}
+                        />
+                    }
+
                 </Card>
             </SafeAreaView>
-        </>
+        </ScrollView>
     );
 };
 
@@ -95,7 +159,7 @@ const styles = StyleSheet.create({
     },
     map: {
         // width: "100%",
-        height: "75%",
+        height: "70%",
         marginBottom: 10,
     },
 });
