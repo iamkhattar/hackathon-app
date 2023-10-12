@@ -1,6 +1,27 @@
-import { Redirect, Stack } from 'expo-router';
+import { Redirect, Slot } from 'expo-router';
 
 import { useAuthContext } from '../../ctx/AuthContext';
+import { View, StyleSheet } from 'react-native';
+import Header from '../../components/Header';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+    //   justifyContent: 'center',
+      backgroundColor: '#ecf0f1',
+    },
+    input: {
+      width: 200,
+      height: 44,
+      padding: 10,
+      borderWidth: 1,
+      borderColor: 'black',
+      marginBottom: 10,
+    },
+  });
 
 export default function AppLayout() {
   const { user } = useAuthContext();
@@ -14,5 +35,8 @@ export default function AppLayout() {
   }
 
   // This layout can be deferred because it's not the root layout.
-  return <Stack />;
+  return <View style={styles.container}>
+          <Header/>
+        <Slot />
+        </View>
 }

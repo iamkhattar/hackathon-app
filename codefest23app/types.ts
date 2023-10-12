@@ -5,3 +5,15 @@ export type User = {
     type: "worker" | "manager"
     jwt: string;
 }
+
+export type Appointment = {
+
+}
+
+export type Client = {
+
+}
+
+export type Worker = {
+
+}

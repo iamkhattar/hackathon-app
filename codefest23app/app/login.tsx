@@ -41,6 +41,7 @@ export default function Login(){
         const authHeader = 'Basic ' + base64.encode(`${username}:${password}`);
         axios.post(`${API_URL}/api/v1/users/login`, {}, {headers: {"Authorization": authHeader}}).then((response) => {
                 const jwt = response.headers["authorization"].split(" ")[1];
+                console.log(jwt);
                 const decoded = jwt_decode(jwt);
                 setUser?.({...decoded as User, jwt});
             }).catch((e: any) => {             
