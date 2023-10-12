@@ -1,9 +1,9 @@
 import React from "react";
 import { View } from "react-native";
 import { Text, Button, useThemeMode } from "@rneui/themed";
-import AppointmentItem from "../components/AppointmentItem";
-import AppointmentDetailsTile from "../components/AppointmentDetailsTile";
-import CheckoutTile from "../components/CheckoutTile";
+import AppointmentItem from "./components/AppointmentItem";
+import AppointmentDetailsTile from "./components/AppointmentDetailsTile";
+import CheckoutTile from "./components/CheckoutTile";
 
 export default function login() {
   return (
