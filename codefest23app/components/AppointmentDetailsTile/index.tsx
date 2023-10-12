@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {SafeAreaView, ScrollView, StyleSheet, View} from "react-native";
-import {Button, Card, Dialog, Text} from "@rneui/themed";
+import {Button, Card, Dialog, Text, Icon} from "@rneui/themed";
 import MapView, {Marker} from "react-native-maps";
 import {Appointment} from "../../types";
 import {router} from "expo-router";
@@ -26,7 +26,7 @@ const AppointmentDetailsTile: React.FunctionComponent<
         <View style={{flex: 1, width: "100%"}}>
             <ScrollView style={{width: "100%", maxHeight: "90%"}}>
                 <SafeAreaView style={{width: "100%", height: "100%", flex: 1}}>
-                    <Card containerStyle={{height: "98%", flexDirection: "column", flex: 1}}>
+                    <Card  containerStyle={{backgroundColor: "transparent", borderColor: "transparent", height: "98%", flexDirection: "column", flex: 1}}>
                         <Card.Title>Appointment
                             with {appointment?.client?.first_name}{" "}{appointment?.client?.last_name}</Card.Title>
                         <Card.Divider/>
@@ -97,6 +97,34 @@ const AppointmentDetailsTile: React.FunctionComponent<
                                 }}
                             />
                         }
+                        {(appointment.appointment_status == "CHECKED_OUT") &&
+                            // <Button
+                            //     buttonStyle={{
+                            //         borderRadius: 5
+                            //     }}
+                            //     color={appointment.appointment_status == "CHECKED_OUT" ? "success" : "sucess"}
+                            //     titleStyle={{fontWeight: "bold", fontSize: 23}}
+                            //     title={appointment.appointment_status == "none" ? "Check In" : "Checked Out"}
+                            //     icon="tick"
+                            //     onPress={() => {
+                            //         Axios.put(`${API_URL}/api/v1/appointments/${appointment.id}/status`,
+                            //             {"status": appointment.appointment_status == "CHECKED_IN" ? "CHECKED_OUT" : "CHECKED_IN"},
+                            //             {headers: {'Authorization': `Bearer ${user?.jwt}`}}
+                            //         )
+                            //             .then(res => router.replace({
+                            //                 pathname: "/worker/appointments/[id]",
+                            //                 params: {id: appointment.id}
+                            //             }))
+                            //             .catch((e) => isError(true));
+                            //     }}
+                            // />
+                            <Button                    buttonStyle={{
+                                borderRadius: 5
+                            }} radius={"sm"} type="solid" color={"success"}>
+                            Checked Out 
+                            <Icon style={{paddingLeft: 10}} name="check" color="white" />
+                            </Button>
+                        }
                     </Card>
                 </SafeAreaView>
             </ScrollView>
@@ -106,11 +134,12 @@ const AppointmentDetailsTile: React.FunctionComponent<
                         buttonStyle={{
                             minHeight: 90,
                             borderRadius: 10,
-                            margin: 30
+                            margin: 30,
+                            marginTop: 10
                         }}
                         size={"lg"}
                         color={"error"}
-                        title={"Notify Emergency Services"}
+                        title={"Alert Emergency Services"}
                         titleStyle={{fontWeight: "bold", fontSize: 23}}
                         onPress={() => {
                             Axios.put(`${API_URL}/api/v1/appointments/${appointment.id}/severity`,
