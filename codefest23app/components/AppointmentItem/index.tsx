@@ -9,23 +9,11 @@ type AppointmentItemProps = {
 
 const AppointmentItem: React.FC<AppointmentItemProps> = ({appointment}: AppointmentItemProps) => {
 
-    let dotColor = "";
-    // switch (state) {
-    //   case "danger":
-    //     dotColor = "red";
-    //     break;
-    //   case "warning":
-    //     dotColor = "orange";
-    //     break;
-    //   case "none":
-    //     dotColor = "gray";
-    //     break;
-    // }
-    // let startDate = new Date(0);
-    // startDate.setUTCSeconds(startTime);
-    //
-    // let endDate = new Date(0);
-    // endDate.setUTCSeconds(endTime);
+    const gender = [
+        "men", "women"
+    ]
+
+    const total = 53;
 
     return (
         <ListItem
@@ -42,11 +30,14 @@ const AppointmentItem: React.FC<AppointmentItemProps> = ({appointment}: Appointm
                 params: {id: appointment.id}
             })}
         >
-            <Avatar rounded source={{uri: "https://uifaces.co/our-content/donated/XdLjsJX_.jpg"}}/>
+            <Avatar rounded size={"large"} source={{uri: `https://randomuser.me/api/portraits/${gender[Math.round(Math.random())]}/${Math.round(Math.random() * total)}.jpg`}}/>
             <ListItem.Content>
                 <ListItem.Title style={{fontWeight: 'bold'}}>
                     {appointment.client.first_name}{" "}{appointment.client.last_name}
                 </ListItem.Title>
+                <ListItem.Subtitle>
+                    {new Date(appointment.start_time).toLocaleString()}
+                </ListItem.Subtitle>
                 <ListItem.Subtitle>
                     {appointment.address}
                 </ListItem.Subtitle>
